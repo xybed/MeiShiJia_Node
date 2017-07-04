@@ -1,0 +1,22 @@
+{
+  "name": "meishijia-node",
+  "version": "1.0.0",
+  "description": "meishijia app's node.js server",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "7mu",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {
+    "koa": "2.0.0",
+    "koa-router": "7.0.0",
+    "koa-bodyparser": "3.2.0",
+    "sequelize": "3.24.1",
+    "mysql": "2.11.1"
+  }
+}

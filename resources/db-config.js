@@ -1,5 +1,6 @@
 'use strict';
 const config={
+	dialect:'mysql',
 	database:'meishijia',
 	username:'root',
 	password:'root',

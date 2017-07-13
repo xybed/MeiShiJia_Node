@@ -3,7 +3,15 @@
  */
 'use strict';
 
-const User = require('../../model/user/User');
+const Sequelize = require('sequelize');
+const User = require('../../db/user/dbUser');
+
+async function verifyRegister(username) {
+    return await User.findAll({
+        attributes: [[Sequelize.fn('COUNT', Sequelize.col('*')), 'count']],
+        where: {username: username}
+    });
+}
 
 async function queryUser(username, verify_code) {
     return await User.findAll({
@@ -14,8 +22,19 @@ async function queryUser(username, verify_code) {
     });
 }
 
+async function queryByProvince(province, city) {
+    return await User.findAll({
+        where: {
+            province: province,
+            city: city
+        }
+    });
+}
+
 let exp = {
-    queryUser: queryUser
+    verifyRegister: verifyRegister,
+    queryUser: queryUser,
+    queryByProvince: queryByProvince
 };
 
 module.exports = exp;

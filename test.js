@@ -22,5 +22,9 @@ function test1() {
     }
 }
 
-test1();
+function test2() {
+    console.log(Date.now());
+    console.log(new Date().getTime());
+}
 
+test2();

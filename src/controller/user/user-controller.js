@@ -12,9 +12,7 @@ module.exports = {
         // ctx.render('index.html', {
         //     title: 'Welcome'
         // });
-        let instance = await userService.login('15606954708');
-        let count = instance[0].get('count');
-        console.log(count);
+        await userService.login('15606958888', '123');
     },
 
     'POST /user/register':async (ctx, next) => {
@@ -30,14 +28,49 @@ module.exports = {
         let username = ctx.request.body.username,
             password = ctx.request.body.password,
             verifyCode = ctx.request.body.verify_code;
+        let result = await userService.register(username, password, verifyCode);
+        switch (result){
+            case 0:
+                baseModel.resultType = -1;
+                baseModel.resultCode = -1;
+                baseModel.detail = '注册失败，请稍后再试';
+                ctx.response.body = JSON.stringify(baseModel);
+                break;
+            case 1:
+                baseModel.resultType = 0;
+                baseModel.resultCode = 0;
+                baseModel.detail = '注册成功';
+                baseModel.data = '注册成功';
+                ctx.response.body = JSON.stringify(baseModel);
+                break;
+            case 2:
+                baseModel.resultType = -1;
+                baseModel.resultCode = -1;
+                baseModel.detail = '该用户已注册过';
+                ctx.response.body = JSON.stringify(baseModel);
+                break;
+            case 3:
+                baseModel.resultType = 0;
+                baseModel.resultCode = 0;
+                baseModel.detail = '该用户注册过且密码相同，自动为您登录';
+                baseModel.data = '该用户注册过且密码相同，自动为您登录';
+                ctx.response.body = JSON.stringify(baseModel);
+                break;
+        }
     },
 
-    'GET /user/login':async (ctx, next) => {
-        let username = ctx.request.query.username,
-            verify_code = ctx.request.query.verify_code;
-        let users = await userService.login(username, verify_code);
-        for(let user of users){
-            console.log(JSON.stringify(user));
+    'POST /user/login':async (ctx, next) => {
+        let queryString = baseController.parseBody(ctx.request.body),
+            sign = ctx.request.body.sign;
+        if(!baseController.validateSign(queryString, sign)){
+            baseModel.resultType = -1;
+            baseModel.resultCode = -1;
+            baseModel.detail = '请求违法';
+            ctx.response.body = JSON.stringify(baseModel);
         }
+
+        let username = ctx.request.body.username,
+            password = ctx.request.body.password;
+
     },
 };

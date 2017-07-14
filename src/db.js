@@ -1,19 +1,20 @@
 /**
  * Created by Administrator on 2017/7/12.
  */
-'use strict'
+'use strict';
 
 const Sequelize = require('sequelize');
 const dbConfig = require('../resources/db-config');
 
-var sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
+let sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
     host: dbConfig.host,
     dialect: dbConfig.dialect,
     pool: {
         max: 5,
         min: 0,
         idle: 10000
-    }
+    },
+    isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE
 });
 
 function defineModel(name, attributes) {
@@ -26,7 +27,8 @@ function defineModel(name, attributes) {
 const TYPES = ['STRING', 'INTEGER', 'BIGINT', 'TEXT', 'DOUBLE', 'DATEONLY', 'BOOLEAN'];
 
 let exp = {
-    defineModel:defineModel
+    defineModel:defineModel,
+    sequelize: sequelize
 };
 
 for (let type of TYPES){

@@ -6,6 +6,7 @@
 const userDao = require('../../dao/user/user-dao');
 const crypto = require('crypto');
 const md5 = crypto.createHash('md5');
+const userModel = require('../../model/user/user-model');
 
 async function register(username, password, verifyCode) {
     let instance = await userDao.verifyRegister(username);
@@ -30,7 +31,8 @@ async function login(username, password) {
         let deadline = time + 7 * 24 * 60 * 60 * 1000;
         await userDao.insertOrUpdateToken(username, md5.digest('hex'), deadline);
 
-
+        userModel.id = user.id;
+        userModel.username = user.username;
     }
 }
 

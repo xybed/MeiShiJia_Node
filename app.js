@@ -8,6 +8,7 @@ const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const controller = require('./src/router2controller');
 const templating = require('./templating');
+const staticFiles = require('./static-files');
 
 const app = new Koa();
 
@@ -21,9 +22,6 @@ app.use(async (ctx, next) => {
     ctx.response.set('X-Response-Time', `${execTime}ms`);
 });
 
-let staticFiles = require('./static-files');
-app.use(staticFiles('/static/', __dirname + '/static'));
-
 app.use(bodyParser());
 
 app.use(templating('views', {
@@ -32,6 +30,7 @@ app.use(templating('views', {
 }));
 
 app.use(controller());
+app.use(staticFiles('/', __dirname + '/static'));
 
 app.listen(8081);
 console.log('app started at port 8081...');

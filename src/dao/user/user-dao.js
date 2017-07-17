@@ -91,12 +91,74 @@ async function insertOrUpdateToken(username, token, deadline) {
     });
 }
 
+async function logout(token) {
+    await UserToken.update({
+        token: '',
+        deadline: ''
+    }, {
+        where: {
+            token: token
+        }
+    });
+}
+
+async function updatePassword(username, password) {
+    return await User.update({
+        password: password
+    }, {
+        where: {
+            username: username
+        }
+    });
+}
+
+async function updateUser(user) {
+    return await User.update({
+        nickname: user.nickname,
+        real_name: user.realName,
+        sex: user.sex,
+        birthday: user.birthday,
+        email: user.email,
+        province: user.province,
+        city: user.city,
+        signature: user.signature
+    }, {
+        where: {
+            id: user.id
+        }
+    });
+}
+
+async function queryAvatar(userId) {
+    return await User.findOne({
+        attributes: ['avatar'],
+        where: {
+            id: userId
+        }
+    });
+}
+
+async function updateAvatar(id, avatar) {
+    return await User.update({
+        avatar: avatar
+    }, {
+        where: {
+            id: id
+        }
+    });
+}
+
 let exp = {
     verifyRegister: verifyRegister,
     verifyPassword: verifyPassword,
     register: register,
     login: login,
-    insertOrUpdateToken: insertOrUpdateToken
+    insertOrUpdateToken: insertOrUpdateToken,
+    logout: logout,
+    updatePassword: updatePassword,
+    updateUser: updateUser,
+    queryAvatar: queryAvatar,
+    updateAvatar: updateAvatar
 };
 
 module.exports = exp;

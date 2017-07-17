@@ -5,5 +5,7 @@
 
 module.exports = {
     baseUrl: '',
-    baseImgUrl: 'http://192.168.1.14:8081/meishijia/'
+    baseImgUrl: 'http://192.168.1.14:8081/meishijia/',
+    baseImgPath: __dirname + '/static',
+    baseImgAvatarPath: '/avatar/'
 };

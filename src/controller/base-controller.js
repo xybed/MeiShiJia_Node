@@ -5,6 +5,7 @@
 
 const crypto = require('crypto');
 const md5 = crypto.createHash('md5');
+const tokenService = require('../service/user/token-service');
 
 const TOKEN_KEY = 'MeiShiJia';
 
@@ -60,9 +61,15 @@ function validateSign(queryString, sign) {
     return sign === md5.digest('hex');
 }
 
+async function validateToken(token) {
+    let userToken = await tokenService.queryToken(token);
+    return userToken && Date.now() <= userToken.deadline;
+}
+
 let exp = {
     parseBody: parseBody,
-    validateSign: validateSign
+    validateSign: validateSign,
+    validateToken: validateToken
 };
 
 module.exports = exp;

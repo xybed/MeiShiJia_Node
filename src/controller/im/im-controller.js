@@ -5,6 +5,7 @@
 
 const baseController = require('../base-controller');
 const baseModel = require('../../model/base-model');
+const imService = require('../../service/im/im-service');
 
 module.exports = {
     'GET /im/contacts':async (ctx, next) => {
@@ -29,5 +30,9 @@ module.exports = {
         }
 
 
+    },
+
+    'GET /im/test':async (ctx, next) => {
+        await imService.queryContacts();
     }
 };

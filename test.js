@@ -6,6 +6,7 @@
 
 const Sequelize = require('sequelize');
 const User = require('./src/db/user/dbUser');
+const RelationChain = require('./src/db/im/dbRelationChain');
 const fs = require('fs');
 
 function test1() {
@@ -24,9 +25,6 @@ function test1() {
 }
 
 function test2() {
-    const reader = fs.createReadStream('http://img3.imgtn.bdimg.com/it/u=902165161,1597760234&fm=26&gp=0.jpg');
-    const stream = fs.createWriteStream(__dirname+'test.jpg');
-    reader.pipe(stream);
 }
 
 test2();

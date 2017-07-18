@@ -5,7 +5,12 @@
 
 const db = require('../../db');
 
-module.exports = db.defineModel('user', {
+const User = db.defineModel('user', {
+    id:{
+        type: db.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     username: db.STRING(255),
     password: db.STRING(255),
     verify_code: db.STRING(6),
@@ -23,3 +28,5 @@ module.exports = db.defineModel('user', {
     signature: db.STRING(255),
     principal_id: db.INTEGER
 });
+
+module.exports = User;

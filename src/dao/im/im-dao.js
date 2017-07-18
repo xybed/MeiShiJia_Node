@@ -3,15 +3,12 @@
  */
 'use strict';
 
-const RelationChain = require('../../db/im/dbRelationChain');
-const User = require('../../db/user/dbUser');
-const Friend = require('../../db/user/dbUser');
-const FoodCategory = require('../../db/food/dbFoodCategory');
-const Food = require('../../db/food/dbFood');
-const Category = require('../../db/food/dbCategory');
 const db = require('../../db');
 
-async function queryContacts() {
+async function queryContacts(id) {
+    /**
+     * 注释的是多表关联查询的示例代码，第二段的user表自身关联是不对的，还没搞懂
+     */
     // let result = await Food.findOne({
     //     where: {
     //         id: 1
@@ -35,13 +32,33 @@ async function queryContacts() {
     //     }
     // });
     // console.log(JSON.stringify(result));
-    let result = await db.sequelize.query('SELECT friend_id,remark,avatar,sort_letter,principal_id FROM user,relation_chain WHERE user_id=$1 AND id=friend_id',
-        {bind:['1'], type:db.sequelize.QueryTypes.SELECT});
-    console.log(JSON.stringify(result));
+    return await db.sequelize.query(
+        `SELECT friend_id,remark,avatar,sort_letter,principal_id 
+        FROM user,relation_chain 
+        WHERE user_id=$1 AND id=friend_id`,
+        {bind:[id], type:db.sequelize.QueryTypes.SELECT});
+}
+
+async function queryContactsDetail(userId, friendId) {
+    return await db.sequelize.query(
+        `SELECT avatar,remark,sex,username,nickname,province,city,signature,principal_id 
+        FROM user,relation_chain 
+        WHERE friend_id=$2 AND user_id=$1 AND id=$2`,
+        {bind:[userId, friendId], type:db.sequelize.QueryTypes.SELECT});
+}
+
+async function updateRemark(userId, friendId, remark) {
+    return await db.sequelize.query(
+        `UPDATE relation_chain 
+        SET remark=$3
+        WHERE user_id=$1 AND friend_id=$2`,
+        {bind:[userId,friendId,remark], type:db.sequelize.QueryTypes.UPDATE});
 }
 
 let exp = {
-    queryContacts: queryContacts
+    queryContacts: queryContacts,
+    queryContactsDetail: queryContactsDetail,
+    updateRemark: updateRemark
 };
 
 module.exports = exp;

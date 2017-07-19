@@ -20,7 +20,7 @@ module.exports = {
         }
 
         let token = ctx.request.query.token;
-        if(!baseController.validateToken(token)){
+        if(await !baseController.validateToken(token)){
             baseModel.resultType = -99;
             baseModel.resultCode = -99;
             baseModel.detail = '重新登录';
@@ -30,7 +30,7 @@ module.exports = {
         }
 
         let id = ctx.request.query.id;
-        let contactsArray = imService.queryContacts(id);
+        let contactsArray = await imService.queryContacts(id);
         baseModel.resultType = 0;
         baseModel.resultCode = 0;
         baseModel.detail = '请求成功';
@@ -50,7 +50,7 @@ module.exports = {
         }
 
         let token = ctx.request.query.token;
-        if(!baseController.validateToken(token)){
+        if(await !baseController.validateToken(token)){
             baseModel.resultType = -99;
             baseModel.resultCode = -99;
             baseModel.detail = '重新登录';
@@ -80,7 +80,7 @@ module.exports = {
             return;
         }
         let token = ctx.request.body.token;
-        if(!baseController.validateToken(token)){
+        if(await !baseController.validateToken(token)){
             baseModel.resultType = -99;
             baseModel.resultCode = -99;
             baseModel.detail = '重新登录';

@@ -8,6 +8,7 @@ const Sequelize = require('sequelize');
 const User = require('./src/db/user/dbUser');
 const RelationChain = require('./src/db/im/dbRelationChain');
 const fs = require('fs');
+const crypto = require('crypto');
 
 function test1() {
     var str = 'ver=1&sign=72df80bf7a29839332eb6bc58f657fb0&type=2&platform=android&token=f895dbe12d7c65804b5704fed9cdcf02';
@@ -25,6 +26,14 @@ function test1() {
 }
 
 function test2() {
+    let md5 = crypto.createHash('md5');
+    let str = '123456';
+    md5.update(str);
+    console.log(md5.digest('hex'));
+    md5 = crypto.createHash('md5');
+    str = '123';
+    md5.update(str);
+    console.log(md5.digest('hex'));
 }
 
 test2();

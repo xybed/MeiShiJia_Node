@@ -4,9 +4,7 @@
 'use strict';
 
 const crypto = require('crypto');
-const md5 = crypto.createHash('md5');
 const tokenService = require('../service/user/token-service');
-
 const TOKEN_KEY = 'MeiShiJia';
 
 /**
@@ -57,6 +55,7 @@ function validateSign(queryString, sign) {
         }
     }
     strBuilder = strBuilder + TOKEN_KEY;
+    let md5 = crypto.createHash('md5');
     md5.update(strBuilder);
     return sign === md5.digest('hex');
 }

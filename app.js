@@ -35,5 +35,5 @@ app.use(templating('views', {
 
 app.use(controller());
 
-app.listen(8081);
-console.log('app started at port 8081...');
+app.listen(3000);
+console.log('app started at port 3000...');

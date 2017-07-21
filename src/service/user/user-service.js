@@ -8,6 +8,9 @@ const crypto = require('crypto');
 const md5 = crypto.createHash('md5');
 const userModel = require('../../model/user/user-model');
 const CONSTANTS = require('../../constants/constants');
+const imApi = require('../../api/im-rest-api');
+const imApiList = require('../../api/im-rest-api-list');
+const genSig = require('../../lib/tencent/usersig');
 
 async function register(username, password, verifyCode) {
     let instance = await userDao.verifyRegister(username);
@@ -21,7 +24,17 @@ async function register(username, password, verifyCode) {
             return 2;
         }
     }
-    return await userDao.register(username, password, verifyCode);
+    let result = await userDao.register(username, password, verifyCode);
+    if(!result)//如果为0，注册不成功，返回
+        return;
+    //注册成功后，要把帐号导入腾讯
+    let principalId = await userDao.queryUserPid(username);
+    principalId = principalId+'';
+    let data = {
+        'Identifier': principalId
+    };
+    imApi(imApiList.accountImport, genSig('liqi'), data);
+    return 1;
 }
 
 async function login(username, password) {

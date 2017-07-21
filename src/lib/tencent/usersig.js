@@ -13,12 +13,19 @@
  */
 
 var sig = require('./TLSAPI');
+const timConfig = require('./tim-config');
+
 var config = {
-    "sdk_appid": 1400036325,
-    "expire_after": 180 * 24 * 3600,
+    "sdk_appid": timConfig.sdk_appid,
+    "expire_after": 15 * 24 * 3600,
     "private_key": "private_key",
     "public_key": "public_key"
 }
 
 var sig = new sig.Sig(config);
-console.log(sig.genSig("1001"));
+
+function genSig(principal_id) {
+    return sig.genSig(principal_id);
+}
+
+module.exports = genSig;

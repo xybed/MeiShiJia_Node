@@ -5,10 +5,10 @@
 'use strict';
 
 const Sequelize = require('sequelize');
-const User = require('./src/db/user/dbUser');
-const RelationChain = require('./src/db/im/dbRelationChain');
 const fs = require('fs');
 const crypto = require('crypto');
+const gensig = require('./src/lib/tencent/usersig');
+const imApi = require('./src/api/im-rest-api');
 
 function test1() {
     var str = 'ver=1&sign=72df80bf7a29839332eb6bc58f657fb0&type=2&platform=android&token=f895dbe12d7c65804b5704fed9cdcf02';
@@ -26,14 +26,10 @@ function test1() {
 }
 
 function test2() {
-    let md5 = crypto.createHash('md5');
-    let str = '123456';
-    md5.update(str);
-    console.log(md5.digest('hex'));
-    md5 = crypto.createHash('md5');
-    str = '123';
-    md5.update(str);
-    console.log(md5.digest('hex'));
+    let usersig = 'eJxNzk1Pg0AQgOH-whWjs7sFwVsFPzBIodAYeiEUtnW0LrhsKY3xv7sSjL0*72RmvowsTC-LqmoOQhXq1HLjxgDjYmSsuVC4RS417vETJy-bFuuiVAWT9dl4V78XY9JGZgDAbEatKfKhRcmLcqvGbYS6tp6YYs9lh43QToHYBAiB-6jw4-cpYgHYlLqO83cOd5qf73IvSHwnKWWqvM3tVZofcxGbvnD3Lw7zaDIk-k72qfV0nJnm2p8Hr-NYNPf5khw2KV13JoQiWy5WXfhQ9dmbhdHiMa6jJhjYdaSM7x8swVZh';
+    imApi(usersig, '1003');
 }
 
+
 test2();
+

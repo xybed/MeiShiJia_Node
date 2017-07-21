@@ -65,6 +65,20 @@ async function register(username, password, verifyCode) {
 }
 
 /**
+ * 查询用户的principal_id
+ * @param username
+ * @returns {Promise.<*>} 返回值会是{principal_id:xxx}
+ */
+async function queryUserPid(username) {
+    return await User.findOne({
+        attributes: ['principal_id'],
+        where: {
+            username: username
+        }
+    });
+}
+
+/**
  * 如果查询不到数据，会返回null
  * @param username
  * @param password
@@ -152,6 +166,7 @@ let exp = {
     verifyRegister: verifyRegister,
     verifyPassword: verifyPassword,
     register: register,
+    queryUserPid: queryUserPid,
     login: login,
     insertOrUpdateToken: insertOrUpdateToken,
     logout: logout,

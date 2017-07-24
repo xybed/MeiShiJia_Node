@@ -18,5 +18,6 @@ module.exports = {
     address: '',
     signature: '',
     principal_id: 0,
-    token: ''
+    token: '',
+    im_usersig: ''
 };

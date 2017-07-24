@@ -61,6 +61,7 @@ async function login(username, password) {
         userModel.signature = user.signature;
         userModel.principal_id = user.principal_id;
         userModel.token = token;
+        userModel.im_usersig = genSig(user.principal_id);
     }else {
         return null;
     }

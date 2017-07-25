@@ -26,8 +26,12 @@ function test1() {
 }
 
 function test2() {
-    let usersig = 'eJxNzk1Pg0AQgOH-whWjs7sFwVsFPzBIodAYeiEUtnW0LrhsKY3xv7sSjL0*72RmvowsTC-LqmoOQhXq1HLjxgDjYmSsuVC4RS417vETJy-bFuuiVAWT9dl4V78XY9JGZgDAbEatKfKhRcmLcqvGbYS6tp6YYs9lh43QToHYBAiB-6jw4-cpYgHYlLqO83cOd5qf73IvSHwnKWWqvM3tVZofcxGbvnD3Lw7zaDIk-k72qfV0nJnm2p8Hr-NYNPf5khw2KV13JoQiWy5WXfhQ9dmbhdHiMa6jJhjYdaSM7x8swVZh';
-    imApi(usersig, '1003');
+    let str = '';
+    if(str){
+        console.log('true');
+    }else {
+        console.log('false');
+    }
 }
 
 

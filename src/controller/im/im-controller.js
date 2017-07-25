@@ -104,5 +104,35 @@ module.exports = {
             baseModel.data = '修改备注成功';
         }
         ctx.response.body = JSON.stringify(baseModel);
+    },
+
+    'GET /im/principalInfo':async (ctx, next) => {
+        let queryString = ctx.request.queryString,
+            sign = ctx.request.query.sign;
+        if(!baseController.validateSign(queryString, sign)){
+            baseModel.resultType = -1;
+            baseModel.resultCode = -1;
+            baseModel.detail = '请求违法';
+            ctx.response.body = JSON.stringify(baseModel);
+            return;
+        }
+        let token = ctx.request.query.token;
+        if(await !baseController.validateToken(token)){
+            baseModel.resultType = -99;
+            baseModel.resultCode = -99;
+            baseModel.detail = '重新登录';
+            baseModel.data = '重新登录';
+            ctx.response.body = JSON.stringify(baseModel);
+            return;
+        }
+
+        let id = ctx.request.query.id,
+            principalId = ctx.request.query.principal_id;
+        let principalModel = await imService.queryPrincipalInfo(id, principalId);
+        baseModel.resultType = 0;
+        baseModel.resultCode = 0;
+        baseModel.detail = '请求成功';
+        baseModel.data = principalModel;
+        ctx.response.body = JSON.stringify(baseModel);
     }
 };

@@ -5,6 +5,7 @@
 
 const imDao = require('../../dao/im/im-dao');
 const CONSTANTS = require('../../constants/constants');
+const principalModel = require('../../model/im/principal-model');
 
 async function queryContacts(id) {
     let result = await imDao.queryContacts(id);
@@ -27,10 +28,25 @@ async function updateRemark(userId, friendId, remark) {
     return result[0];
 }
 
+async function queryPrincipalInfo(id, principalId) {
+    let principal = await imDao.queryPrincipal(principalId);
+    let remark = await imDao.queryPrincipalRemark(id, principal.id);
+    principalModel.principal_user_id = principal.id;
+    principalModel.avatar = principal.avatar;
+    principalModel.principal_id = principal.principal_id;
+    if(remark[0]){
+        principalModel.remark = remark[0];
+    }else {
+        principalModel.remark = principal.nickname;
+    }
+    return principalModel;
+}
+
 let exp = {
     queryContacts: queryContacts,
     queryContactsDetail: queryContactsDetail,
-    updateRemark: updateRemark
+    updateRemark: updateRemark,
+    queryPrincipalInfo: queryPrincipalInfo
 };
 
 module.exports = exp;

@@ -4,6 +4,7 @@
 'use strict';
 
 const db = require('../../db');
+const User = require('../../db/user/dbUser');
 
 async function queryContacts(id) {
     /**
@@ -55,10 +56,29 @@ async function updateRemark(userId, friendId, remark) {
         {bind:[userId,friendId,remark], type:db.sequelize.QueryTypes.UPDATE});
 }
 
+async function queryPrincipal(principalId) {
+    return await User.findOne({
+        attributes: ['id', 'avatar', 'nickname', 'principal_id'],
+        where: {
+            principal_id: principalId
+        }
+    });
+}
+
+async function queryPrincipalRemark(userId, friendId) {
+    return await db.sequelize.query(
+        `SELECT remark 
+        FROM relation_chain 
+        WHERE user_id=$1 AND friend_id=$2`,
+        {bind:[userId, friendId], type:db.sequelize.QueryTypes.SELECT});
+}
+
 let exp = {
     queryContacts: queryContacts,
     queryContactsDetail: queryContactsDetail,
-    updateRemark: updateRemark
+    updateRemark: updateRemark,
+    queryPrincipal: queryPrincipal,
+    queryPrincipalRemark: queryPrincipalRemark
 };
 
 module.exports = exp;

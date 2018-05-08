@@ -30,13 +30,20 @@ function parseBody(body) {
  * 验证请求的签名规则是否正确
  * @param queryString 请求的queryString
  * @param sign 请求的签名
+ * @param ctx 请求的上下文
  * @returns {boolean} 前端签名是否等于后端签名
  */
-function validateSign(queryString, sign) {
+function validateSign(queryString, sign, ctx) {
+    //TODO sign从header中取
     if(!sign)
         return false;
     if(!queryString)
         return false;
+    let header = ctx.request.headers,
+        platform = header.platform,
+        ver = header.ver,
+        token = header.token;
+    queryString = queryString + '&platform='+platform + '&ver='+ver + '&token='+token;
     let strArr = queryString.split('&');
     if(strArr.length > 0){
         for(let str of strArr){
